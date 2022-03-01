@@ -1,0 +1,37 @@
+Sign Up <h3> this is a h3 component
+
+
+<div clasName=container>
+
+
+<Reus-input /> fistname
+
+
+ <Resu-input /> lastname
+
+
+<input /> Email 
+
+<imput /> pwd
+
+
+
+
+
+H3-title component
+DIv- container 
+  Firstname
+  lastname
+  Email
+  Password
+
+
+</div>
+
+
+TableWrapper
+  Table
+    Row
+    Column
+      Name
+      Age

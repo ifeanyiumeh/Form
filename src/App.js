@@ -10,6 +10,8 @@ function App() {
   // Error messages
   const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
+  const [lastNameErrorMsg, setlastNameErrorMsg] = useState('')
+  const [firstNameErrorMsg, setfirstNameErrorMsg] = useState('')
 
 
   const passwordErrorMsgHandler = useCallback(
@@ -36,13 +38,34 @@ function App() {
     }
   }, [email]);
 
+
+const lastNameErrorMsgHandler = useCallback(() => {
+    if(lastName.length === 0){
+      setlastNameErrorMsg('Enter your lastName, please');
+    }
+  }, [lastName]);
+
+const firstNameErrorMsgHandler = useCallback(() => {
+    if(firstName.length === 0){
+      setfirstNameErrorMsg('Enter your Firstname, please');
+    }
+  }, [firstName]);
+
   useEffect(() => {
     passwordErrorMsgHandler();
-  }, [password, passwordErrorMsgHandler])
+  }, [password, passwordErrorMsgHandler]);
 
   useEffect(() => {
     emailErrorHandler();
   }, [email, emailErrorHandler]);
+
+  useEffect(() => {
+    lastNameErrorMsgHandler();
+  }, [lastName, lastNameErrorMsgHandler]);
+
+  useEffect(() => {
+    firstNameErrorMsgHandler();
+  }, [firstName, firstNameErrorMsgHandler]);
   
 
   return (
@@ -60,6 +83,7 @@ function App() {
             value={firstName}
             onChange={(e) => setFirstname(e.target.value)}
           />
+          <p className={styles.error}>{firstNameErrorMsg}</p>
         </div>
         <br />
 
@@ -72,6 +96,7 @@ function App() {
             value={lastName}
             onChange={e => setLastname(e.target.value)}
           />
+          <p className={styles.error}>{lastNameErrorMsg}</p>
         </div>
         <br />
 
@@ -86,6 +111,7 @@ function App() {
         />
         <p className={styles.error}>{emailErrorMsg}</p>
         </div>
+        <br />
 
 
         <div>

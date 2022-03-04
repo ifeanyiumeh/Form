@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./App.module.css";
 
 function App() {
@@ -7,49 +7,103 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Error messages
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
+  const [emailErrorMsg, setEmailErrorMsg] = useState('');
+
+
+  const passwordErrorMsgHandler = useCallback(
+    () => {
+    if(password.length >= 6 && password.length <= 12){
+      setPasswordErrorMsg("")
+    }else {
+      setPasswordErrorMsg('WRONG Password');
+    }
+    }, [password]
+  )
+
+  const emailErrorHandler = useCallback(() => {
+    if(email.length === 0){
+      setEmailErrorMsg('email should not be empty, daddy');
+    }else if (!email.endsWith(".com")){
+      setEmailErrorMsg('Invalid email address');
+    }else if (email.lastIndexOf("@") === -1 || email.lastIndexOf("@") === 0){
+      setEmailErrorMsg("Invalid email address (@ used innapropriately)");
+    }else if(email.lastIndexOf('@') + 1 === email.lastIndexOf('.com')) {
+      setEmailErrorMsg("Invalid email address (domain must exist)");
+    }else{
+      setEmailErrorMsg('')
+    }
+  }, [email]);
+
+  useEffect(() => {
+    passwordErrorMsgHandler();
+  }, [password, passwordErrorMsgHandler])
+
+  useEffect(() => {
+    emailErrorHandler();
+  }, [email, emailErrorHandler]);
+  
+
   return (
     <>
       <div className={styles.Somto}>
         <p className={styles.newPtag}>FORM INPUT</p>
       </div>
       <form>
-        <label>Firstname</label>
-        <input
-          type="text"
-          classname={styles.firstname}
-          placeholder="John"
-          value={firstName}
-          onChange={(e) => setFirstname(e.target.value)}
-        />
+        <div>
+          <label>Firstname</label>
+          <input
+            type="text"
+            className={styles.firstname}
+            placeholder="John"
+            value={firstName}
+            onChange={(e) => setFirstname(e.target.value)}
+          />
+        </div>
+        <br />
 
-        <label>Lastname</label>
-        <input
-          type="text"
-          classname={styles.lastname}
-          placeholder="Doe"
-          value={lastName}
-          onChange={(e) => setLastname(e.target.value)}
-        />
+        <div>
+          <label>Lastname</label>
+          <input
+            type="text"
+            className={styles.lastname}
+            placeholder="Doe"
+            value={lastName}
+            onChange={e => setLastname(e.target.value)}
+          />
+        </div>
+        <br />
 
+        <div>
         <label>Email</label>
         <input
           type="text"
-          classname={styles.email}
+          className={styles.email}
           placeholder="john_doe@yahoo.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <p className={styles.error}>{emailErrorMsg}</p>
+        </div>
 
+
+        <div>
         <label>password</label>
         <input
-          type="text"
-          classname={styles.password}
+          type="password"
+          className={styles.password}
           placeholder="min 6 characters, max 12characters"
           min="6"
           max="12"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            //errorMsg(e.target.value);
+          }}
         />
+       <p className={styles.error}> {passwordErrorMsg} </p>
+       </div>
       </form>
     </>
   );
